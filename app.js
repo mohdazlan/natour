@@ -21,6 +21,26 @@ app.get('/api/v1/tours', (req, res) => {
     })
 })
 
+app.get('/api/v1/tours/:id', (req, res) => {
+    console.log(req.params)
+
+    const id = req.params.id * 1
+
+    if (id > tours.length) {
+        return res.status(404).json({
+            status: 'gagal',
+            message: 'invalid ID'
+        })
+    }
+
+    const tour = tours.find(el => el.id === id)
+
+    res.status(200).json({
+        status: 'success',
+        data: tour
+    })
+})
+
 app.post('/api/v1/tours', (req, res) => {
 
     // this will give you the id to the next data
