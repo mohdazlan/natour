@@ -5,13 +5,9 @@ const app = express()
 
 app.use(express.json());
 
-// app.get('/', (req, res) => {
-//     res.status(200).send('hello world')
-// })
-
 const tours = JSON.parse(fs.readFileSync(`${__dirname}/dev-data/data/tours-simple.json`))
 
-app.get('/api/v1/tours', (req, res) => {
+const getAllTours = (req, res) => {
     res.status(200).json({
         status: 'berjaya',
         results: tours.length,
@@ -19,9 +15,9 @@ app.get('/api/v1/tours', (req, res) => {
             tours: tours
         }
     })
-})
+}
 
-app.get('/api/v1/tours/:id', (req, res) => {
+const getTour = (req, res) => {
     console.log(req.params)
 
     const id = req.params.id * 1
@@ -39,9 +35,9 @@ app.get('/api/v1/tours/:id', (req, res) => {
         status: 'success',
         data: tour
     })
-})
+}
 
-app.post('/api/v1/tours', (req, res) => {
+const createTour = (req, res) => {
 
     // this will give you the id to the next data
     const newId = tours[tours.length - 1].id + 1
@@ -63,9 +59,9 @@ app.post('/api/v1/tours', (req, res) => {
             })
         }
     )
-})
+}
 
-app.patch('/api/v1/tours/:id', (req, res) => {
+const updateTour = (req, res) => {
     if (req.params.id * 1 > tours.length) {
         return res.status(404).json({
             status: 'gagal',
@@ -78,9 +74,9 @@ app.patch('/api/v1/tours/:id', (req, res) => {
             data: '<Updated tour here...>'
         }
     })
-})
+}
 
-app.delete('/api/v1/tours/:id', (req, res) => {
+const deleteTour = (req, res) => {
     if (req.params.id * 1 > tours.length) {
         return res.status(404).json({
             status: 'gagal',
@@ -93,7 +89,17 @@ app.delete('/api/v1/tours/:id', (req, res) => {
             null
 
     })
-})
+}
+
+app.get('/api/v1/tours', getAllTours)
+
+app.get('/api/v1/tours/:id', getTour)
+
+app.post('/api/v1/tours', createTour)
+
+app.patch('/api/v1/tours/:id', updateTour)
+
+app.delete('/api/v1/tours/:id', deleteTour)
 
 const port = 3000
 app.listen(port, () => {
