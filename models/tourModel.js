@@ -17,3 +17,6 @@ const tourSchema = new mongoose.Schema({
 });
 
 const Tour = mongoose.model('Tour', tourSchema);
+
+// we only want to export the Tour
+module.exports = Tour;
